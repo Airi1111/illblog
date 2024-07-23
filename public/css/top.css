@@ -1,0 +1,18 @@
+nav{
+     background-color: #FFCACA;
+}
+
+.image{
+     height: 25%;
+     width: 25%;
+    
+}
+.index{
+    padding: 20px;
+}
+.pickmore,.pickup{
+    text-align: center;
+}
+.pickups,.question{
+    margin:30px;
+}

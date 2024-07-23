@@ -1,0 +1,48 @@
+x-app-layout {
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh; /* 画面の高さに合わせて中央寄せ */
+    flex-direction: column;
+}
+
+textarea {
+    border-radius: 15px;
+    padding: 10px;
+    width: 80%; /* デスクトップ用の幅 */
+    max-width: 600px;
+    font-size: 16px;
+}
+
+input[type="submit"] {
+    background-color: #FF0000; /* #FFCACAより濃い赤 */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 20px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.footer {
+    margin-top: 20px;
+}
+
+/* スマホ対応 */
+@media screen and (max-width: 768px) {
+    textarea {
+        width: 90%; /* スマホ用の幅 */
+    }
+
+    input[type="submit"] {
+        width: 90%;
+    }
+}
