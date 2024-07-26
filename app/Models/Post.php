@@ -28,7 +28,7 @@ class Post extends Model
     }
 
     public function allView(){
-        return $this::with('user')->orderBy('updated_at', 'DESC');
+        return $this::with('user')->orderBy('updated_at', 'DESC')->get();
     }
     
     public function likes()
@@ -52,4 +52,10 @@ class Post extends Model
 
         return in_array($id, $likers);
     }
+    
+    public function userPosts($userId)
+    {
+        return $this::where('user_id', $userId)->orderBy('updated_at', 'DESC')->get();
+    }
+
 }

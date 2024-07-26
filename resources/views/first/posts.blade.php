@@ -5,38 +5,35 @@
     <title>postshow</title>
     <link rel="stylesheet" href="{{ asset('/css/posts.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-    <style>
-        .posts img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 10px 0;
-        }
-        .alert {
-            color: red;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-    </style>
 </head>
 <x-app-layout>
-    <h3 style="text-align: center;">投稿内容</h3>
+    <h2 style="text-align: center;">CREATE POST</h2>
     <div class="posts">
         <div class="post">
-            @if (session('error'))
-                <div class="alert">
-                    {{ session('error') }}
-                </div>
-            @endif
-            @if ($post->image_urls)
-                @foreach (json_decode($post->image_urls) as $imageUrl)
-                    <img src="{{ $imageUrl }}" alt="Image">
-                @endforeach
-            @endif
+            <div class="images">
+                @if (session('error'))
+                    <div class="alert">
+                        {{ session('error') }}
+                    </div>
+                @endif
+                @php
+                    $imageUrls = json_decode($post->image_urls);
+                    $isSingleImage = count($imageUrls) === 1;
+                @endphp
+                <div class="image-grid {{ $isSingleImage ? 'single-image' : '' }}">
+                    @if ($post->image_urls)
+                        @foreach ($imageUrls as $imageUrl)
+                            <div class="image-item">
+                                <img src="{{ $imageUrl }}" alt="Image">
+                            </div>
+                        @endforeach
+                    @endif
+                </div>    
+            </div>
 
             <div class="content">
                 <div class="content__post">
-                    <h4 class="title">{{ $post->title }}</h4>
+                    <h4 class="title font-semibold leading-tight">{{ $post->title }}</h4>
                     <p class="comment">{{ $post->comment }}</p>
                     <p class="tag">{{ $post->tag }}</p>
                 </div>

@@ -1,3 +1,9 @@
+body {
+    font-family: 'Nunito', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
 x-app-layout {
     text-align: center;
 }
@@ -8,18 +14,18 @@ x-app-layout {
     align-items: center;
     height: 80vh; /* 画面の高さに合わせて中央寄せ */
     flex-direction: column;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 軽い影を付ける */
 }
 
-textarea {
-    border-radius: 15px;
-    padding: 10px;
-    width: 80%; /* デスクトップ用の幅 */
-    max-width: 600px;
-    font-size: 16px;
+h3 {
+    margin-bottom: 20px;
+    color: #333; /* テキスト色を暗いグレーに */
 }
 
 input[type="submit"] {
-    background-color: #FF0000; /* #FFCACAより濃い赤 */
+    background-color: #FF5733; /* #FFCACAより濃い赤 */
     border: none;
     color: white;
     padding: 10px 20px;
@@ -30,10 +36,25 @@ input[type="submit"] {
     margin-top: 20px;
     border-radius: 15px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #e04d31; /* ホバー時の色変更 */
 }
 
 .footer {
     margin-top: 20px;
+}
+
+.footer a {
+    color: #FF5733;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.footer a:hover {
+    text-decoration: underline; /* ホバー時に下線を追加 */
 }
 
 /* スマホ対応 */
@@ -45,4 +66,53 @@ input[type="submit"] {
     input[type="submit"] {
         width: 90%;
     }
+}
+
+.cp_iptxt {
+    position: relative;
+    width: 80%;
+    margin: 40px 3%;
+}
+
+.cp_iptxt input[type='text'] {
+    font: 15px/24px sans-serif;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.3em;
+    transition: 0.3s;
+    letter-spacing: 1px;
+    color: #aaaaaa;
+    border: none;
+    border-bottom: 2px solid #1b2538;
+    background: transparent;
+}
+
+.cp_iptxt input[type='text']:focus {
+    border-bottom: 2px solid #da3c41;
+    outline: none;
+}
+
+/* 検索ボックスのスタイリング */
+.cp_iptxt textarea {
+    text-align: center;
+    width: 100%;
+    padding: 12px;
+    border-radius: 15px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.cp_iptxt textarea:focus {
+    border-color: #FF5733; /* フォーカス時のボーダーカラー */
+    outline: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* フォームのスタイリング */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

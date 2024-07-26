@@ -3,6 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <title>top</title>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+
         <link rel="stylesheet" href="{{ asset('/css/top.css')  }}" >
 </head><!-- class="bg-white border-b border-gray-100"-->
 <nav x-data="{ open: false }" >
@@ -21,19 +23,16 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
-                        {{ __('HOME') }}
+                        <i class="fa-solid fa-house" style="color: #d54444;"></i>
                     </x-nav-link>
                     <x-nav-link :href="route('index')" :active="request()->routeIs('index')">
-                        {{ __('MORE') }}
+                        <i class="fa-solid fa-fire" style="color: #d54444;"></i>
                     </x-nav-link>
                     <x-nav-link :href="route('create')" :active="request()->routeIs('create')">
-                        {{ __('POST') }}
+                       <i class="fa-solid fa-plus"style="color: #d54444;"class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex"></i>
                     </x-nav-link>
                     <x-nav-link :href="route('searchForm')" :active="request()->routeIs('searchForm')">
-                        <div>
-                            <input type="submit" value="検索">
-                          </form>
-                        </div>
+                        <i class="fa-solid fa-magnifying-glass" style="color: #d54444;"></i>
                     </x-nav-link>
                 </div>
             </div>
@@ -123,4 +122,7 @@
             </div>
         </div>
     </div>
+     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://kit.fontawesome.com/fdd4f25b90.js" crossorigin="anonymous"></script>
 </nav>
