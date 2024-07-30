@@ -25,5 +25,5 @@ class ImageUploadHelper
             }
         }
         return $imageUrls;
-    }
+}
 }

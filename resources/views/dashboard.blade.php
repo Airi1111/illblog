@@ -47,8 +47,21 @@
 
     <table class="questions">
         <strong><h3 class="font-semibold leading-tight">MY QUESTIONS</h3></strong>
-        <div class='question'>
-            <a href="posts/questions">質問へのリンク</a>
+        <div class="questions-list">
+            @foreach ($questions as $question) 
+                <div class="questions">
+                    <h4 class="title font-semibold leading-tight">
+                        <a href="{{ route('question.show', ['question' => $question->id]) }}">{{ $question->title }}</a>
+                    </h4>
+                    <p class="comment">{{ $question->comment }}</p>
+                    @if ($question->user)
+                        <small>{{ $question->user->name }}</small>
+                    @else
+                        <small>Unknown user</small>
+                    @endif
+                </div>
+            @endforeach
+        </div>
             <div class="more">
                 <a href="#" class="more" type="button">もっと見る</a>
             </div>
