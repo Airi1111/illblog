@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use DateTime;
+use Carbon\Carbon;
 
 class QuestionSeeder extends Seeder
 {
@@ -17,13 +18,11 @@ class QuestionSeeder extends Seeder
     public function run()
     {
          DB::table('questions')->insert([
-                'user_id'=>1,
-                'category_id'=>1,
-                'title' => '教えてください。',
-                'comment' => '命名はデータを基準に考えますか',
-                'image'=>'',
-                'created_at' => new DateTime(),
-                'updated_at' => new DateTime(),
-         ]);
+            'title' => 'ああああ',
+            'comment' => 'ああああ',
+            'user_id' => 1,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
     }
 }

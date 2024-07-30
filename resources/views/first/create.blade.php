@@ -12,6 +12,9 @@
         <form action="{{ route('store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <br>
+            <div class="to_question_post">
+                <a href="{{ route('question.create') }}" class="pickmore" type="button">質問投稿へ</a>
+            </div>
             <div class="posts">
                 <strong><h3>投稿内容</h3></strong>
                 <div class="post">

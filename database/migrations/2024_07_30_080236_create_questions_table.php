@@ -15,13 +15,15 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            // $table->foreignId('category_id')->constrained()->onDelete('cascade'); // 将来的に使用する場合はコメントアウトを外す
-            $table->string('title', 50);
-            $table->text('comment'); // 500文字を超える可能性があるため、text型に変更
-            $table->string('image', 100)->nullable();
+            $table->string('title');
+            $table->text('comment');
+            $table->unsignedBigInteger('category_id')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->json('image_urls')->nullable();
             $table->timestamps();
-            $table->softDeletes();
+
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -35,3 +37,4 @@ return new class extends Migration
         Schema::dropIfExists('questions');
     }
 };
+

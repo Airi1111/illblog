@@ -9,29 +9,29 @@
 <x-app-layout>
     <div class="createview">
         <br>
-        <form action="{{ route('store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('question.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <br>
             <div class="posts">
-                <strong><h3>投稿内容</h3></strong>
+                <strong><h3>質問投稿</h3></strong>
                 <div class="post">
                     <div class="image-container">
                         <div class="file-input-wrapper">
-                            <input type="file" name="post[images][]" multiple accept="image/*" id="file-input" />
+                            <input type="file" name="question[images][]" multiple accept="image/*" id="file-input" />
                             <button type="button" class="add-image-button">
                                 <i class="fa-solid fa-plus" style="color: #ffffff;"></i>
                             </button>
                             <div class="file-input-preview" id="preview">
-                                <input type="hidden" id="deleted-images" name="post[deleted_images]" />
+                                <input type="hidden" id="deleted-images" name="question[deleted_images]" />
                             </div>
                         </div>
                     </div>
                     <div class="title">
-                        <input type="text" name="post[title]" placeholder="タイトル" required />
+                        <input type="text" name="question[title]" placeholder="見出し" required />
                     </div>
                     <br>
                     <div class="comment">
-                        <textarea name="post[comment]" placeholder="コメント本文"></textarea>
+                        <textarea name="question[comment]" placeholder="質問本文"></textarea>
                     </div>
                 </div>
                 <input type="submit" value="投稿する" />

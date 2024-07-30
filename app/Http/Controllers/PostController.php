@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-
+use App\Helpers\ImageUploadHelper;
 
 class PostController extends Controller
 {
@@ -86,32 +86,19 @@ class PostController extends Controller
     {
         $input = $request->input('post');
         $input['user_id'] = Auth::id();
-        
+    
         if ($request->hasFile('post.images')) {
-            $imageUrls = [];
-            $images = $request->file('post.images');
-            foreach ($images as $image) {
-                try {
-                    // Cloudinary に画像をアップロードし、リサイズと圧縮を適用
-                    $uploadedFileUrl = Cloudinary::upload($image->getRealPath(), [
-                        'folder' => 'dgougzdd8', // フォルダ名を指定
-                        'transformation' => [
-                            'width' => 800, // 画像の幅を800pxにリサイズ
-                            'quality' => 'auto', // 画像の品質を自動で最適化
-                            'fetch_format' => 'auto' // 最適なフォーマットに変換
-                        ]
-                    ])->getSecurePath();
-                    $imageUrls[] = $uploadedFileUrl;
-                } catch (\Exception $e) {
-                    return back()->with('error', 'Failed to upload image: ' . $e->getMessage());
-                }
+            try {
+                $imageUrls = ImageUploadHelper::uploadImages($request->file('post.images'));
+                $input['image_urls'] = json_encode($imageUrls);
+            } catch (\Exception $e) {
+                return back()->with('error', $e->getMessage());
             }
-            $input['image_urls'] = json_encode($imageUrls); // JSON形式で保存
         }
+    
         $post->fill($input)->save();
         return redirect()->route('posts', ['post' => $post->id]);
     }
-
 
 
     public function pickup(Post $post)
