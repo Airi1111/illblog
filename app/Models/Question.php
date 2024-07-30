@@ -4,25 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Post extends Model
+class Question extends Model
 {
     use HasFactory;
     
     protected $fillable = [
-        'title',
-        'tag',
-        'comment',
-        'image_urls',  // 変更: image_url -> image_urls
         'user_id',
+        'category_id',
+        'title', 
+        'comment', 
+        'image_urls'
     ];
-    
-    public function user(){
+     public function user()
+    {
         return $this->belongsTo(User::class);
     }
-    
-    public function getPaginateByLimit($query, int $limit_count = 6)
+
+     public function getPaginateByLimit($query, int $limit_count = 6)
     {
         return $query->with('user')->orderBy('updated_at', 'DESC')->paginate($limit_count);
     }
@@ -33,7 +33,7 @@ class Post extends Model
     
     public function likes()
     {
-        return $this->hasMany(Like::class, 'post_id');
+        return $this->hasMany(Like::class, 'question_id');
     }
 
     /**
@@ -58,5 +58,4 @@ class Post extends Model
         return $this::where('user_id', $userId)->orderBy('updated_at', 'DESC')->get();
     }
     
-
 }

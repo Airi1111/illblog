@@ -1,0 +1,145 @@
+body {
+    font-family: 'Nunito', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+x-app-layout {
+    text-align: center;
+}
+
+input[type="text"] {
+    text-align: center;
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus {
+    border-color: #FF5733;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    outline: none;
+}
+
+.index {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    min-height: 100vh; /* 画面全体の高さに合わせる */
+}
+
+.search-container {
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 300px;
+    padding: 10px;
+    border-radius: 15px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-right: 10px;
+}
+
+.search-input:focus {
+    border-color: #FF5733;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 87, 51, 0.3); /* 赤い枠 */
+}
+
+.search-button {
+    background-color: #FF5733;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    margin-left: 190px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: #e04d31;
+}
+
+h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.pickups {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+    text-align: center;
+}
+
+.img img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.title-and-likes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.title h4 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.likes {
+    display: flex;
+    align-items: center;
+}
+
+.username small {
+    font-size: 14px;
+    color: #777;
+}
+
+/* スマホ対応 */
+@media screen and (max-width: 768px) {
+    .search-input {
+        width: 90%;
+    }
+
+    .search-button {
+        width: 90%;
+    }
+}
