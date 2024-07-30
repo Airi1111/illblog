@@ -48,15 +48,27 @@
         </div>
     </div>
 
-    <table class="questions">
-        <h3 class="font-semibold leading-tight">#Question</h3>
-        <div class='question'>
-            <a href="#">質問へのリンク</a>
-            <div class="more">
-                <a href="#" class="more" type="button">もっと見る</a>
-            </div>
+<h3 class="font-semibold leading-tight">#Question</h3>
+    @section('content')
+<div class="container">
+    <h2>人気の質問</h2>
+    <div class="question-list">
+        @forelse($questions as $question)
+        <div class="question-item">
+            <h3>{{ $question->title }}</h3>
+            <p>{{ $question->comment }}</p>
+            <a href="{{ route('questions.show', $question->id) }}" class="btn btn-primary">詳細を見る</a>
         </div>
-    </table>
+        @empty
+        <p>質問がありません。</p>
+        @endforelse
+    </div>
+</div>
+@endsection
+    <div class="more">
+        <a href="{{ route('pick.questions') }}" class="more" type="button">もっと見る</a>
+    </div>
+</div>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

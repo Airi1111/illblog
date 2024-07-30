@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->constrained()->onDelete('cascade');
-            $table->integer('category_id');
-            $table->string('title',50);
-            $table->string('comment',500);
-            $table->string('image',100)->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('category_id')->constrained()->onDelete('cascade'); // 将来的に使用する場合はコメントアウトを外す
+            $table->string('title', 50);
+            $table->text('comment'); // 500文字を超える可能性があるため、text型に変更
+            $table->string('image', 100)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

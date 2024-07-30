@@ -2,7 +2,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
-
+use App\Http\Controllers\QuestionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,6 +29,11 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/first/{post}', [PostController::class, 'update'])->name('update');
     Route::delete('/first/{post}', [PostController::class, 'delete'])->name('delete');
     Route::get('/first/{post}/edit', [PostController::class, 'edit'])->name('edit');
+    
+    // web.php
+
+    Route::get('/index/question', [QuestionController::class, 'indexQuestion'])->name('pick.questions');
+
     
     // ProfileController のルート定義
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

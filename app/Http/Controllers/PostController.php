@@ -173,13 +173,13 @@ class PostController extends Controller
     public function delete(Post $post)
     {
         $post->delete();
-        return redirect()->route('home')->with(['posts' => $post->getPaginateByLimit()]);
+        return redirect()->route('home')->with(['posts' => $post]);
     }
     
     public function myPosts()
     {
         $userId = Auth::id();
         $posts = Post::userPosts($userId);
-        return view('first.myworks', ['posts' => $posts]);
+        return view('dashboard', ['posts' => $posts]);
     }
 }
