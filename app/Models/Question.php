@@ -31,9 +31,9 @@ class Question extends Model
         return $this::with('user')->orderBy('updated_at', 'DESC')->get();
     }
     
-    public function likes()
+     public function like_questions()
     {
-        return $this->hasMany(Like::class, 'question_id');
+        return $this->hasMany(LikeQuestion::class, 'question_id');
     }
 
     /**

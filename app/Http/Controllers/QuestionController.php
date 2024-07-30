@@ -15,17 +15,6 @@ use App\Helpers\ImageUploadHelper;
 
 class QuestionController extends Controller
 {
-    public function indexQuestion(Request $request)
-    {
-        $query = Question::withCount('likes')->orderBy('likes_count', 'desc');
-        $questions = (new Question)->getPaginateByLimit($query);
-        foreach ($questions as $question) {
-            $question->image_url = json_decode($question->image_urls, true)[0] ?? null;
-        }
-        
-        return view('first.index', ['questions' => $questions]);
-    }
-
 
 
     public function home(Post $post, Request $request)
@@ -67,6 +56,7 @@ class QuestionController extends Controller
         $question->fill($input)->save();
         return redirect()->route('question.show', ['question' => $question->id]);
     }
+
     
 
 
