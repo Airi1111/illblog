@@ -57,16 +57,7 @@ input[type="submit"]:hover {
     text-decoration: underline; /* ホバー時に下線を追加 */
 }
 
-/* スマホ対応 */
-@media screen and (max-width: 768px) {
-    textarea {
-        width: 90%; /* スマホ用の幅 */
-    }
 
-    input[type="submit"] {
-        width: 90%;
-    }
-}
 
 .cp_iptxt {
     position: relative;

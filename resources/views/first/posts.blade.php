@@ -17,16 +17,20 @@
                     </div>
                 @endif
                 @php
-                    $imageUrls = json_decode($post->image_urls);
+                    $imageUrls = json_decode($post->image_urls, true) ?? [];
                     $isSingleImage = count($imageUrls) === 1;
                 @endphp
                 <div class="image-grid {{ $isSingleImage ? 'single-image' : '' }}">
-                    @if ($post->image_urls)
+                    @if (!empty($imageUrls))
                         @foreach ($imageUrls as $imageUrl)
-                            <div class="image-item">
-                                <img src="{{ $imageUrl }}" alt="Image">
-                            </div>
+                            @if ($imageUrl) <!-- Check if the image URL is not null or empty -->
+                                <div class="image-item">
+                                    <img src="{{ $imageUrl }}" alt="Image">
+                                </div>
+                            @endif
                         @endforeach
+                    @else
+                        <p class="text-align: center;">No images available.</p>
                     @endif
                 </div>    
             </div>

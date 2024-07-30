@@ -22,6 +22,9 @@
                                 <i class="fa-solid fa-plus" style="color: #ffffff;"></i>
                             </button>
                             <div class="file-input-preview" id="preview"></div>
+                             <button type="button" class="delete-button">
+                                <i class="fa-solid fa-delete-left"style="color: #ffffff;"></i>
+                            </button>
                         </div>
                     </div>
                     <div class="title">
@@ -31,6 +34,12 @@
                     <div class="comment">
                         <textarea name="post[comment]" placeholder="コメント本文"></textarea>
                     </div>
+                    <div class="tags">
+                        <label for="tags-input">タグ</label>
+                        <input type="text" id="tags-input" placeholder="タグを入力" />
+                        <div class="tags-container" id="tags-container"></div>
+                        <input type="hidden" name="post[tags]" id="tags-hidden-input" />
+                    </div>
                 </div>
                 <input type="submit" value="投稿する" />
             </div>
@@ -38,7 +47,8 @@
     </div>
 
     <script>
-          document.querySelector('.add-image-button').addEventListener('click', function() {
+        // 画像プレビュー機能
+        document.querySelector('.add-image-button').addEventListener('click', function() {
             const fileInputWrapper = document.querySelector('.file-input-wrapper');
             const newFileInput = document.createElement('input');
             newFileInput.type = 'file';
@@ -68,12 +78,77 @@
                         reader.readAsDataURL(file);
 
                         preview.appendChild(img);
+                        
+                        const removeButton = document.createElement('button');
+                        removeButton.type = 'button';
+                        removeButton.textContent = 'x';
+                        removeButton.className = 'remove-image-button';
+                        removeButton.addEventListener('click', function() {
+                            removeImage(fileInputWrapper, newFileInput, preview);
+                        });
+
+                        preview.appendChild(removeButton);
                     }
                 });
             });
 
             newFileInput.click(); // 新しいファイル選択ダイアログを開く
         });
+        
+        
+        
+
+        // タグ入力機能
+        const tagsInput = document.getElementById('tags-input');
+        const tagsContainer = document.getElementById('tags-container');
+        const tagsHiddenInput = document.getElementById('tags-hidden-input');
+        let tags = [];
+
+        tagsInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const tagText = tagsInput.value.trim();
+                if (tagText && !tags.includes(tagText)) {
+                    tags.push(tagText);
+                    addTag(tagText);
+                    tagsInput.value = '';
+                    updateTagsHiddenInput();
+                }
+            }
+        });
+
+        function addTag(tagText) {
+            const tagElement = document.createElement('span');
+            tagElement.className = 'tag';
+            tagElement.textContent = tagText;
+
+            const removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.textContent = 'x';
+            removeButton.addEventListener('click', function() {
+                removeTag(tagText);
+            });
+
+            tagElement.appendChild(removeButton);
+            tagsContainer.appendChild(tagElement);
+        }
+
+        function removeTag(tagText) {
+            tags = tags.filter(tag => tag !== tagText);
+            updateTagsHiddenInput();
+            renderTags();
+        }
+
+        function renderTags() {
+            tagsContainer.innerHTML = '';
+            tags.forEach(tag => {
+                addTag(tag);
+            });
+        }
+
+        function updateTagsHiddenInput() {
+            tagsHiddenInput.value = tags.join(',');
+        }
     </script>
 </x-app-layout>
 </body>

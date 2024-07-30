@@ -1,59 +1,34 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
 use App\Models\Post;
-use App\Models\Like;
-//use Cloudinary;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
-
-class PostController extends Controller
+class QuestionController extends Controller
 {
-    public function index(Post $post, Request $request)
+    public function index(questions $question)
     {
-         $query = Post::withCount('likes')
-                     ->orderBy('likes_count', 'desc');
+        $questions = Post::where('type', 'question')
+                         ->withCount('likes')
+                         ->orderBy('likes_count', 'desc')
+                         ->paginate(6);
 
-        // ページネーションを実行
-        $posts = (new Post)->getPaginateByLimit($query);
-        //$posts = $post->getPaginateByLimit();
-        foreach ($posts as $post) {
-            $post->image_url = json_decode($post->image_urls, true)[0] ?? null;
+        foreach ($questions as $question) {
+            $question->image_url = json_decode($question->image_urls, true)[0] ?? null;
         }
-        
-        /*$tags = Tag::pluck('name');
-        return response()->json($tags);*/
-        return view('first.index', ['posts' => $posts]);
-    }
 
-    public function home(Post $post, Request $request)
-    {
-        $posts = Post::where('user_id', Auth::id())
-                 ->orderBy('created_at', 'DESC')
-                 ->limit(6)
-                 ->get();
-        foreach ($posts as $post) {
-            $post->image_url = json_decode($post->image_urls, true)[0] ?? null;
-        }
-        return view('dashboard', ['posts' => $posts]);
+        return view('question.questions', ['questions' => $questions]);
     }
 
     public function posts(Post $post)
     {
-        return view('first.posts', ['post' => $post]);
+        return view('question.posts', ['post' => $post]);
     }
-
-    public function __construct()
-    {
-        $this->middleware(['auth', 'verified'])->only(['like', 'unlike']);
-    }
-
+    
     public function like($id)
     {
         Like::create([
@@ -79,13 +54,14 @@ class PostController extends Controller
 
     public function create()
     {
-        return view('first.create');
+        return view('question.create');
     }
 
     public function store(PostRequest $request, Post $post)
     {
         $input = $request->input('post');
         $input['user_id'] = Auth::id();
+        $input['type'] = 'question';
         
         if ($request->hasFile('post.images')) {
             $imageUrls = [];
@@ -109,37 +85,19 @@ class PostController extends Controller
             $input['image_urls'] = json_encode($imageUrls); // JSON形式で保存
         }
         $post->fill($input)->save();
-        return redirect()->route('posts', ['post' => $post->id]);
-    }
-
-
-
-    public function pickup(Post $post)
-    {
-        {
-        $posts = $post->allView();
-        foreach ($posts as $post) {
-            $post->image_url = json_decode($post->image_urls, true)[0] ?? null;
-        }
-        return view('first.pickup', ['posts' => $posts]);
-    }
-    }
-
-    public function myworks(Post $post)
-    {
-        return view('first.myworks', ['posts' => $post->allView()]);
+        return redirect()->route('questions.show', ['question' => $post->id]);
     }
 
     public function searchForm()
     {
-        return view('first.search');
+        return view('question.search');
     }
 
     public function search(Request $request)
     {
         $keyword = $request->input('keyword');
         
-        $query = Post::query();
+        $query = Post::where('type', 'question');
         
         if (!empty($keyword)) {
             $keywords = preg_split('/[\s,]+/', $keyword); // スペースやカンマでキーワードを分割
@@ -158,28 +116,51 @@ class PostController extends Controller
         Log::info('検索キーワード:', ['keyword' => $keyword]);
         Log::info('生成されたクエリ:', ['query' => $query->toSql()]);
         
-        return view('first.result', compact('posts', 'keyword'));
+        return view('question.result', compact('posts', 'keyword'));
     }
-
 
     public function update(PostRequest $request, Post $post)
     {
         $input = $request->input('post');
         $input['user_id'] = $request->user()->id;
         $post->fill($input)->save();
-        return redirect()->route('posts', ['post' => $post->id]);
+        return redirect()->route('questions.show', ['question' => $post->id]);
     }
 
     public function delete(Post $post)
     {
         $post->delete();
-        return redirect()->route('home')->with(['posts' => $post->getPaginateByLimit()]);
+        return redirect()->route('questions.index');
     }
     
     public function myPosts()
     {
         $userId = Auth::id();
-        $posts = Post::userPosts($userId);
-        return view('first.myworks', ['posts' => $posts]);
+        $posts = Post::where('user_id', $userId)->where('type', 'question')->get();
+        return view('question.myworks', ['posts' => $posts]);
+    }
+  
+    public function toggleLike($id, $action)
+    {
+        $post = Post::findOrFail($id);
+    
+        if ($action === 'like' && !$post->is_liked_by_auth_user()) {
+            Like::create([
+                'post_id' => $id,
+                'user_id' => Auth::id(),
+            ]);
+        } elseif ($action === 'unlike' && $post->is_liked_by_auth_user()) {
+            $like = Like::where('post_id', $id)->where('user_id', Auth::id())->first();
+            if ($like) {
+                $like->delete();
+            }
+        }
+    
+        $likesCount = $post->likes->count();
+        $isLiked = $post->is_liked_by_auth_user();
+    
+        $likesHtml = view('partials.likes', compact('likesCount', 'isLiked', 'post'))->render();
+    
+        return response()->json(['likesHtml' => $likesHtml]);
     }
 }

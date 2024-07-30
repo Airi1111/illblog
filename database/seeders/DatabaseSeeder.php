@@ -24,7 +24,6 @@ class DatabaseSeeder extends Seeder
             PostSeeder::class,
             QuestionSeeder::class,
             CategorySeeder::class,
-            TagSeeder::class,
             ]);
     }
 }

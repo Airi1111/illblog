@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use DateTime;
@@ -17,9 +16,21 @@ class CategorySeeder extends Seeder
     public function run()
     {
         DB::table('categories')->insert([
-                'name'=>'イラスト',
+            [
+                'name' => 'イラスト',
                 'created_at' => new DateTime(),
                 'updated_at' => new DateTime(),
-         ]);
+            ],
+            [
+                'name' => 'かわいい',
+                'created_at' => new DateTime(),
+                'updated_at' => new DateTime(),
+            ],
+            [
+                'name' => 'かっこいい',
+                'created_at' => new DateTime(),
+                'updated_at' => new DateTime(),
+            ]
+        ]);
     }
 }

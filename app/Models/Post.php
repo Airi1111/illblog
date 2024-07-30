@@ -22,9 +22,9 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
     
-    public function getPaginateByLimit(int $limit_count = 6)
+    public function getPaginateByLimit($query, int $limit_count = 6)
     {
-        return $this::with('user')->orderBy('updated_at', 'DESC')->paginate($limit_count);
+        return $query->with('user')->orderBy('updated_at', 'DESC')->paginate($limit_count);
     }
 
     public function allView(){
@@ -57,5 +57,6 @@ class Post extends Model
     {
         return $this::where('user_id', $userId)->orderBy('updated_at', 'DESC')->get();
     }
+    
 
 }

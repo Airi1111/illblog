@@ -9,36 +9,36 @@
 <div class='home'>
     <strong><h3 class="font-semibold leading-tight">MY WORKS</h3></strong>
     <div class="works">
-        @foreach($posts as $post)
-        <div class="content">
-            <div class="image">
-                 @if($post->image_url) 
-                    <a href="{{ route('posts', ['post' => $post->id]) }}"><img src="{{ $post->image_url }}" alt="画像が読み込めません。" ></a>
-                @else
-                    <p>画像がありません。</p>
-                 @endif
-                <div class="title-and-likes">
-                    <div class="title">
-                        <a href="{{ route('posts', ['post' => $post->id]) }}">{{ $post->title }}</a>
-                    </div>
-                    <div class="likes">
-                        @if($post->is_liked_by_auth_user())
-                        <a href="{{ route('post.unlike', ['id' => $post->id]) }}" class="btn btn-success btn-sm">
-                            <ion-icon name="heart"></ion-icon><span class="badge">{{ $post->likes->count() }}</span>
-                        </a>
+         @foreach($posts as $post)
+                <div class="content">
+                    <div class="img">
+                        @if($post->image_url) 
+                            <a href="{{ route('posts', ['post' => $post->id]) }}"><img src="{{ $post->image_url }}" alt="画像が読み込めません。" ></a>
                         @else
-                        <a href="{{ route('post.like', ['id' => $post->id]) }}" class="btn btn-secondary btn-sm">
-                            <ion-icon name="heart-outline"></ion-icon><span class="badge">{{ $post->likes->count() }}</span>
-                        </a>
+                            <p>画像がありません。</p>
                         @endif
+                        <div class="title-and-likes">
+                            <div class="title">
+                                <h4><a href="{{ route('posts', ['post' => $post->id]) }}">{{ $post->title }}</a></h4>
+                            </div>
+                            <div class="likes">
+                                @if($post->is_liked_by_auth_user())
+                                    <a href="{{ route('post.unlike', ['id' => $post->id]) }}" class="btn btn-success btn-sm">
+                                        <ion-icon name="heart"></ion-icon><span class="badge">{{ $post->likes->count() }}</span>
+                                    </a>
+                                @else
+                                    <a href="{{ route('post.like', ['id' => $post->id]) }}" class="btn btn-secondary btn-sm">
+                                        <ion-icon name="heart-outline"></ion-icon><span class="badge">{{ $post->likes->count() }}</span>
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="username">
+                            <small>{{ $post->user->name }}</small>
+                        </div>
                     </div>
                 </div>
-                <div class="username">
-                    <small>{{ $post->user->name }}</small>
-                </div>
-            </div>
-        </div>
-        @endforeach
+            @endforeach
     </div>
 
     <div class="more">
