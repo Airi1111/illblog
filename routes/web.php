@@ -2,7 +2,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
-
+use App\Http\Controllers\QuestionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,6 +29,18 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/first/{post}', [PostController::class, 'update'])->name('update');
     Route::delete('/first/{post}', [PostController::class, 'delete'])->name('delete');
     Route::get('/first/{post}/edit', [PostController::class, 'edit'])->name('edit');
+    
+
+   Route::get('/index/question', [QuestionController::class, 'indexQuestion'])->name('pick.questions');
+
+    Route::get('/question/create', [QuestionController::class, 'create'])->name('question.create');
+    Route::post('/question', [QuestionController::class, 'store'])->name('question.store');
+    Route::get('/question/myquestion', [PostController::class, 'myquestions'])->name('myquestions');
+      Route::get('/question/{question}', [QuestionController::class, 'show'])->name('question.show');
+    Route::put('/question/{question}', [QuestionController::class, 'update'])->name('question.update');
+    Route::delete('/question/{question}', [QuestionController::class, 'delete'])->name('question.delete');
+    Route::get('/question/{question}/edit', [QuestionController::class, 'edit'])->name('question.edit');
+
     
     // ProfileController のルート定義
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

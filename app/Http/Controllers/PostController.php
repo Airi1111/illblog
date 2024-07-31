@@ -5,44 +5,60 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Question;
 use App\Models\Like;
 //use Cloudinary;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-
+use App\Helpers\ImageUploadHelper;
 
 class PostController extends Controller
 {
     public function index(Post $post, Request $request)
     {
-         $query = Post::withCount('likes')
-                     ->orderBy('likes_count', 'desc');
-
-        // ページネーションを実行
-        $posts = (new Post)->getPaginateByLimit($query);
-        //$posts = $post->getPaginateByLimit();
+        // Postのクエリを構築
+        $postQuery = Post::withCount('likes')->orderBy('likes_count', 'desc');
+        $posts = (new Post)->getPaginateByLimit($postQuery);
         foreach ($posts as $post) {
             $post->image_url = json_decode($post->image_urls, true)[0] ?? null;
         }
         
-        /*$tags = Tag::pluck('name');
-        return response()->json($tags);*/
-        return view('first.index', ['posts' => $posts]);
+        // Questionのクエリを構築
+        $questionQuery = Question::withCount('like_questions')->orderBy('like_questions_count', 'desc');
+        $questions = (new Question)->getPaginateByLimit($questionQuery);
+        foreach ($questions as $question) {
+            $question->image_url = json_decode($question->image_urls, true)[0] ?? null;
+        }
+        
+        // ビューにデータを渡す
+        return view('first.index', ['posts' => $posts, 'questions' => $questions]);
     }
 
-    public function home(Post $post, Request $request)
+   public function home(Request $request)
     {
-        $posts = Post::where('user_id', Auth::id())
-                 ->orderBy('created_at', 'DESC')
-                 ->limit(6)
-                 ->get();
+        $postQuery = Post::where('user_id', Auth::id())
+                         ->orderBy('created_at', 'DESC');
+        $posts = (new Post)->getPaginateByLimit($postQuery);
+    
+        // 画像URLを設定
         foreach ($posts as $post) {
             $post->image_url = json_decode($post->image_urls, true)[0] ?? null;
         }
-        return view('dashboard', ['posts' => $posts]);
+    
+        $questionQuery = Question::where('user_id', Auth::id())
+                                 ->orderBy('created_at', 'DESC');
+        $questions = (new Question)->getPaginateByLimit($questionQuery);
+    
+        // 画像URLを設定
+        foreach ($questions as $question) {
+            $question->image_url = json_decode($question->image_urls, true)[0] ?? null;
+        }
+    
+        return view('dashboard', ['posts' => $posts, 'questions' => $questions]);
     }
+
 
     public function posts(Post $post)
     {
@@ -86,33 +102,19 @@ class PostController extends Controller
     {
         $input = $request->input('post');
         $input['user_id'] = Auth::id();
-        
+    
         if ($request->hasFile('post.images')) {
-            $imageUrls = [];
-            $images = $request->file('post.images');
-            foreach ($images as $image) {
-                try {
-                    // Cloudinary に画像をアップロードし、リサイズと圧縮を適用
-                    $uploadedFileUrl = Cloudinary::upload($image->getRealPath(), [
-                        'folder' => 'dgougzdd8', // フォルダ名を指定
-                        'transformation' => [
-                            'width' => 800, // 画像の幅を800pxにリサイズ
-                            'quality' => 'auto', // 画像の品質を自動で最適化
-                            'fetch_format' => 'auto' // 最適なフォーマットに変換
-                        ]
-                    ])->getSecurePath();
-                    $imageUrls[] = $uploadedFileUrl;
-                } catch (\Exception $e) {
-                    return back()->with('error', 'Failed to upload image: ' . $e->getMessage());
-                }
+            try {
+                $imageUrls = ImageUploadHelper::uploadImages($request->file('post.images'));
+                $input['image_urls'] = json_encode($imageUrls);
+            } catch (\Exception $e) {
+                return back()->with('error', $e->getMessage());
             }
-            $input['image_urls'] = json_encode($imageUrls); // JSON形式で保存
         }
+    
         $post->fill($input)->save();
         return redirect()->route('posts', ['post' => $post->id]);
     }
-
-
 
     public function pickup(Post $post)
     {
@@ -173,13 +175,13 @@ class PostController extends Controller
     public function delete(Post $post)
     {
         $post->delete();
-        return redirect()->route('home')->with(['posts' => $post->getPaginateByLimit()]);
+        return redirect()->route('home')->with(['posts' => $post]);
     }
     
     public function myPosts()
     {
         $userId = Auth::id();
         $posts = Post::userPosts($userId);
-        return view('first.myworks', ['posts' => $posts]);
+        return view('dashboard', ['posts' => $posts]);
     }
 }

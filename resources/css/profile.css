@@ -1,0 +1,22 @@
+/* resources/css/profile.css */
+
+/* プロフィール画像を丸くする */
+.profile-image-container {
+    width: 150px; /* コンテナの幅 */
+    height: 150px; /* コンテナの高さ */
+    border-radius: 50%; /* 丸くする */
+    overflow: hidden; /* 画像がコンテナからはみ出さないようにする */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0; /* コンテナの背景色（任意） */
+}
+
+/* public/css/profile.css */
+.profile-image {
+    width: 100px; /* 任意のサイズに調整 */
+    height: 100px; /* 任意のサイズに調整 */
+    border-radius: 50%; /* 丸く表示 */
+    object-fit: cover; /* 画像が枠内にフィットするように調整 */
+    border: 2px solid #ddd; /* 任意で枠線を追加 */
+}

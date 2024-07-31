@@ -105,13 +105,38 @@ input[type="text"]:focus {
     background-color: #e94e29;
 }
 
+/* プレビュー画像を縦一列に並べて中央に配置 */
 .file-input-preview {
-    margin-top: 20px;
-    text-align: center;
+    display: flex;
+    flex-direction: column; /* 縦に並べる */
+    align-items: center; /* 中央揃え */
+    gap: 10px; /* 各画像の間隔 */
+    margin-top: 10px;
+    width: 100%; /* コンテナの幅を設定 */
+    max-width: 600px; /* 最大幅を設定 */
+    overflow: auto; /* 画像が多すぎる場合にスクロール */
 }
 
 .file-input-preview img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
+    max-width: 100%; /* 画像の最大幅をコンテナに合わせる */
+    height: auto; /* 高さは自動調整 */
+    object-fit: cover; /* 画像の切り抜き方法 */
+    border-radius: 5px; /* 角を丸くする */
+}
+
+.remove-image-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(255, 0, 0, 0.6);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px;
+}
+
+.remove-image-button:hover {
+    background: rgba(255, 0, 0, 0.8);
 }
