@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class ProfileImage extends Component
+class ProfileImages extends Component
 {
     /**
      * Create a new component instance.
