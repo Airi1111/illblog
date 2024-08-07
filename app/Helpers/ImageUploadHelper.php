@@ -3,9 +3,12 @@
 namespace App\Helpers;
 
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\Log;
 
 class ImageUploadHelper
 {
+    
+
     public static function uploadImages($images)
     {
         $imageUrls = [];
@@ -19,11 +22,17 @@ class ImageUploadHelper
                         'fetch_format' => 'auto'
                     ]
                 ])->getSecurePath();
+    
+                // デバッグ用: ログにアップロードされた画像のURLを出力
+                Log::info('Uploaded Image URL:', ['url' => $uploadedFileUrl]);
+    
                 $imageUrls[] = $uploadedFileUrl;
             } catch (\Exception $e) {
+                Log::error('Failed to upload image:', ['error' => $e->getMessage()]);
                 throw new \Exception('Failed to upload image: ' . $e->getMessage());
             }
         }
         return $imageUrls;
-}
+    }
+
 }

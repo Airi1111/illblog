@@ -98,7 +98,7 @@ class PostController extends Controller
         return view('first.create');
     }
 
-    public function store(PostRequest $request, Post $post)
+   public function store(PostRequest $request, Post $post)
     {
         $input = $request->input('post');
         $input['user_id'] = Auth::id();
@@ -106,15 +106,32 @@ class PostController extends Controller
         if ($request->hasFile('post.images')) {
             try {
                 $imageUrls = ImageUploadHelper::uploadImages($request->file('post.images'));
-                $input['image_urls'] = json_encode($imageUrls);
+    
+                // 既存の画像URLを取得
+                $existingUrls = $post->image_urls ? json_decode($post->image_urls, true) : [];
+    
+                // 新しい画像URLを既存の画像URLに追加
+                $allUrls = array_merge($existingUrls, $imageUrls);
+    
+                // 削除された画像の処理
+                if ($request->input('post.deleted_images')) {
+                    $deletedImages = explode(',', $request->input('post.deleted_images'));
+                    $allUrls = array_diff($allUrls, $deletedImages);
+                }
+    
+                // 画像URLをJSON形式で保存
+                $input['image_urls'] = json_encode(array_values($allUrls));
             } catch (\Exception $e) {
                 return back()->with('error', $e->getMessage());
             }
         }
     
+        // 投稿データの保存
         $post->fill($input)->save();
+    
         return redirect()->route('posts', ['post' => $post->id]);
     }
+
 
     public function pickup(Post $post)
     {
