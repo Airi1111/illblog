@@ -42,59 +42,62 @@
         </form>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const fileInput = document.querySelector('#file-input');
-            const previewContainer = document.querySelector('#preview');
-            const deletedImagesInput = document.querySelector('#deleted-images');
-            let deletedImages = [];
+<script>
 
-            // 画像追加ボタンのイベントリスナー
-            document.querySelector('.add-image-button').addEventListener('click', function() {
-                fileInput.click();
-            });
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.querySelector('#file-input');
+    const previewContainer = document.querySelector('#preview');
+    const deletedImagesInput = document.querySelector('#deleted-images');
+    let deletedImages = [];
 
-            fileInput.addEventListener('change', function(event) {
-                Array.from(event.target.files).forEach(file => {
-                    if (file.type.startsWith('image/')) {
-                        const preview = document.createElement('div');
-                        preview.className = 'file-input-preview';
-                        preview.style.position = 'relative'; // スタイルを相対的に設定
+    // 画像追加ボタンのイベントリスナー
+    document.querySelector('.add-image-button').addEventListener('click', function() {
+        fileInput.click();
+    });
 
-                        const img = document.createElement('img');
-                        img.file = file;
+    fileInput.addEventListener('change', function(event) {
+        Array.from(event.target.files).forEach(file => {
+            if (file.type.startsWith('image/')) {
+                const preview = document.createElement('div');
+                preview.className = 'file-input-preview';
+                preview.style.position = 'relative'; // スタイルを相対的に設定
 
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            img.src = e.target.result;
-                        };
-                        reader.readAsDataURL(file);
+                const img = document.createElement('img');
+                img.file = file;
 
-                        const removeButton = document.createElement('button');
-                        removeButton.type = 'button';
-                        removeButton.className = 'remove-image-button';
-                        removeButton.innerHTML = '<i class="fa-solid fa-delete-left" style="color: #ffffff;"></i>';
-                        removeButton.addEventListener('click', function() {
-                            preview.remove(); // 画像プレビューを削除
-                            // 削除された画像のファイル名を追加
-                            if (!deletedImages.includes(file.name)) {
-                                deletedImages.push(file.name);
-                                updateDeletedImagesInput();
-                            }
-                        });
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
 
-                        preview.appendChild(img);
-                        preview.appendChild(removeButton);
-                        previewContainer.appendChild(preview);
+                const removeButton = document.createElement('button');
+                removeButton.type = 'button';
+                removeButton.className = 'remove-image-button';
+                removeButton.innerHTML = '<i class="fa-solid fa-delete-left" style="color: #ffffff;"></i>';
+                removeButton.addEventListener('click', function() {
+                    preview.remove(); // 画像プレビューを削除
+                    // 削除された画像のファイル名を追加
+                    if (!deletedImages.includes(file.name)) {
+                        deletedImages.push(file.name);
+                        updateDeletedImagesInput();
                     }
                 });
-            });
 
-            function updateDeletedImagesInput() {
-                deletedImagesInput.value = deletedImages.join(',');
+                preview.appendChild(img);
+                preview.appendChild(removeButton);
+                previewContainer.appendChild(preview);
             }
         });
-    </script>
+    });
+
+    function updateDeletedImagesInput() {
+        deletedImagesInput.value = deletedImages.join(',');
+    }
+});
+
+</script>
+
 </x-app-layout>
 </body>
 </html>
