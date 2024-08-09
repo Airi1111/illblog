@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
-    <title>postshow</title>
+    <title>Post Show</title>
     <link rel="stylesheet" href="{{ asset('/css/posts.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 </head>
@@ -32,7 +32,7 @@
                     @else
                         <p class="text-align: center;">No images available.</p>
                     @endif
-                </div>    
+                </div>
             </div>
 
             <div class="content">
@@ -42,6 +42,17 @@
                     <p class="tag">{{ $post->tag }}</p>
                 </div>
                 <small>{{ $post->user->name }}</small>
+            </div>
+            <div class="likes">
+                @if($post->is_liked_by_auth_user())
+                    <a href="{{ route('post.unlike', ['id' => $post->id]) }}" class="btn btn-success btn-sm">
+                        <ion-icon name="heart"></ion-icon><span class="badge">{{ $post->likes->count() }}</span>
+                    </a>
+                @else
+                    <a href="{{ route('post.like', ['id' => $post->id]) }}" class="btn btn-secondary btn-sm">
+                        <ion-icon name="heart-outline"></ion-icon><span class="badge">{{ $post->likes->count() }}</span>
+                    </a>
+                @endif
             </div>
             <form action="/first/{{ $post->id }}" id="form_{{ $post->id }}" method="post">
                 @csrf
@@ -53,6 +64,31 @@
     <div class="footer">
         <a href="/">戻る</a>
     </div>
+    
+    <!-- コメント表示部分 -->
+    @if($post->comments->isNotEmpty())
+        @foreach($post->comments as $comment)
+            <div class="comment">
+                <p>{{ $comment->user->name }}: {{ $comment->comment }}</p>
+                @if(Auth::id() === $comment->user_id)
+                    <form action="{{ route('post.comments.destroy', $comment->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">削除</button>
+                    </form>
+                @endif
+            </div>
+        @endforeach
+    @else
+        <p>コメントはありません。</p>
+    @endif
+
+    <!-- コメント追加フォーム -->
+    <form action="{{ route('post.comments.store', $post->id) }}" method="POST">
+        @csrf
+        <textarea name="comment" required></textarea>
+        <button type="submit">コメントを追加</button>
+    </form>
     <script>
         function deletePost(id) {
             'use strict';

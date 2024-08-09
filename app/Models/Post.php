@@ -59,5 +59,8 @@ class Post extends Model
         return $this::where('user_id', $userId)->orderBy('updated_at', 'DESC')->get();
     }
     
-
+    public function comments()
+    {
+        return $this->hasMany(PostComment::class);
+    }
 }

@@ -6,37 +6,40 @@ body {
 .posts {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3列のグリッドレイアウト */
-    gap: 20px; /* 各項目間の間隔を設定 */
-    padding: 20px;
+    /* gap: 0; 隙間をなくす */
+    padding: 0; /* 余白を削除 */
+    margin: 0; /* マージンを削除 */
 }
 
 .content {
     position: relative;
     overflow: hidden;
-    height: 300px;
+    height: 350px;
     border: 1px solid #ddd;
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    margin: 0; /* 各コンテンツ間のマージンを削除 */
 }
 
 .image-container {
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: center; /* 横方向中央揃え */
+    align-items: center; /* 縦方向中央揃え */
     position: relative;
 }
 
 .post-image {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* アスペクト比を保持しつつ枠内に収める */
+    object-fit: cover; /* コンテナを完全にカバーするように画像を拡大/縮小 */
     border-radius: 8px;
 }
+
 
 .title-and-likes {
     position: absolute;
@@ -85,6 +88,7 @@ body {
     background-color: #FFCACA;
     color: white;
 }
+
 .return a {
     align-items: center;
     margin-top: 50px;

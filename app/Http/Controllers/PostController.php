@@ -16,7 +16,7 @@ use App\Helpers\ImageUploadHelper;
 
 class PostController extends Controller
 {
-    public function index(Post $post, Request $request)
+   public function index(Post $post, Request $request)
     {
         // Postのクエリを構築
         $postQuery = Post::withCount('likes')->orderBy('likes_count', 'desc');
@@ -24,19 +24,19 @@ class PostController extends Controller
         foreach ($posts as $post) {
             $post->image_url = json_decode($post->image_urls, true)[0] ?? null;
         }
-        
+    
         // Questionのクエリを構築
-        $questionQuery = Question::withCount('like_questions')->orderBy('like_questions_count', 'desc');
+        $questionQuery = Question::withCount('likes')->orderBy('likes_count', 'desc');
         $questions = (new Question)->getPaginateByLimit($questionQuery);
         foreach ($questions as $question) {
             $question->image_url = json_decode($question->image_urls, true)[0] ?? null;
         }
-        
+    
         // ビューにデータを渡す
         return view('first.index', ['posts' => $posts, 'questions' => $questions]);
     }
-
-   public function home(Request $request)
+    
+    public function home(Request $request)
     {
         $postQuery = Post::where('user_id', Auth::id())
                          ->orderBy('created_at', 'DESC');
@@ -62,6 +62,7 @@ class PostController extends Controller
 
     public function posts(Post $post)
     {
+         $post->load('comments.user');
         return view('first.posts', ['post' => $post]);
     }
 

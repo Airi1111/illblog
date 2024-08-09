@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use App\Helpers\ImageUploadHelper;
 
+
 class QuestionController extends Controller
 {
 
@@ -29,10 +30,14 @@ class QuestionController extends Controller
         return view('dashboard', ['posts' => $posts]);
     }
 
-    public function posts(Post $post)
+    public function questionpick()
     {
-        return view('first.posts', ['post' => $post]);
+        $questions = Question::with('likes', 'user') // リレーションを事前にロード
+        ->where('user_id', Auth::id())
+        ->get();
+         return view('question.pickquestions', compact('questions'));
     }
+
 
     public function create()
     {
@@ -66,6 +71,7 @@ class QuestionController extends Controller
         return view('question.myquestions', compact('questions'));
     }
 
+
     public function update(QuestionRequest $request, Question $question)  // 修正箇所
     {
         $input = $request->input('question');
@@ -92,8 +98,8 @@ class QuestionController extends Controller
         return view('question.show', compact('question'));
     }
     public function __construct()
-{
-    $this->middleware('auth');
-}
+    {
+        $this->middleware('auth');
+    }
 
 }
