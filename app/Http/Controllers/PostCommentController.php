@@ -2,33 +2,59 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PostCommentRequest;
-use App\Models\Post;
+use Illuminate\Http\Request;
 use App\Models\PostComment; 
 use Illuminate\Support\Facades\Auth;
 
 class PostCommentController extends Controller
 {
-    public function store(PostCommentRequest $request, $postId)
+    public function __construct()
     {
-        $post = Post::findOrFail($postId);
-
-        // コメントの保存
-        $comment = new PostComment(); 
-        $comment->user_id = Auth::id(); 
-        $comment->post_id = $postId;
-        $comment->comment = $request->input('comment');
-        $comment->save();
-
-        // 成功時のリダイレクト
-        return redirect()->route('posts', ['post' => $postId])->with('success', 'コメントが投稿されました。');
+        $this->middleware('auth');
     }
 
-    public function destroy($id)
+   public function store(Request $request)
     {
-        $comment = PostComment::findOrFail($id); 
-        $comment->delete();
+        try {
+            $request->validate([
+                'post_id' => 'required|integer|exists:posts,id',
+                'comment' => 'required|string|max:255',
+            ]);
+    
+            $comment = new PostComment();
+            $comment->post_id = $request->input('post_id');
+            $comment->user_id = auth()->id();
+            $comment->comment = $request->input('comment');
+            $comment->save();
+    
+            return response()->json([
+                'user' => auth()->user(),
+                'comment' => $comment
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('コメント投稿エラー: ' . $e->getMessage());
+    
+            return response()->json([
+                'error' => 'コメントの投稿に失敗しました。',
+                'details' => $e->getMessage()  // 詳細なエラーメッセージを追加
+            ], 500);
+        }
+    }
 
-        return redirect()->back()->with('success', 'コメントが削除されました。');
+    
+    public function destroy($commentId)
+    {
+        $comment = PostComment::find($commentId);
+    
+        if ($comment) {
+            if ($comment->user_id === Auth::id()) {
+                $comment->delete();
+                return response()->json(['success' => true]);
+            } else {
+                return response()->json(['error' => '権限がありません。'], 403);
+            }
+        }
+    
+        return response()->json(['error' => 'コメントが見つかりません。'], 404);
     }
 }

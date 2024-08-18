@@ -6,13 +6,18 @@
         <title>Laravel</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-        <link rel="stylesheet" href="{{ asset('/css/question/pickup.css') }}">
+        <link rel="stylesheet" href="{{ asset('/css/pickup.css') }}">
     </head>
     <x-app-layout>
         <div class="posts">
             @foreach($posts as $post)
                 <div class="content">
                     <div class="img">
+                        @if($post->image_url) 
+                                <a href="{{ route('posts', ['post' => $post->id]) }}"><img src="{{ $post->image_url }}" alt="画像が読み込めません。" ></a>
+                            @else
+                                <p>画像がありません。</p>
+                            @endif
                         <div class="title-and-likes">
                             <div class="title">
                                 <h4><a href="{{ route('posts', ['post' => $post->id]) }}">{{ $post->title }}</a></h4>

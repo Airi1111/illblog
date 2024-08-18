@@ -1,20 +1,32 @@
 <?php
 
-namespace App\View\Components;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use Illuminate\View\Component;
-
-class MyProfileImage extends Component
+class AddProfileImageToUsersTable extends Migration
 {
-    public $imageUrl;
-
-    public function __construct($imageUrl = null)
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
     {
-        $this->imageUrl = $imageUrl;
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('profile_image')->nullable();
+        });
     }
 
-    public function render()
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
     {
-        return view('components.profile-image');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('profile_image');
+        });
     }
 }

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use App\Helpers\ImageUploadHelper;
 
+
 class PostController extends Controller
 {
    public function index(Post $post, Request $request)
@@ -71,28 +72,38 @@ class PostController extends Controller
         $this->middleware(['auth', 'verified'])->only(['like', 'unlike']);
     }
 
+
+
+   
+// ユーザーがすでに「いいね」しているかどうかを確認してから「いいね」処理を行う
     public function like($id)
     {
-        Like::create([
-            'post_id' => $id,
-            'user_id' => Auth::id(),
-        ]);
-
-        session()->flash('success', 'You Liked the Reply.');
-
-        return redirect()->back();
+        $post = Post::findOrFail($id);
+        $user = Auth::user();
+    
+        // すでに「いいね」しているかを確認
+        if (!$post->likes()->where('user_id', $user->id)->exists()) {
+            $post->likes()->create(['user_id' => $user->id]);
+        }
+    
+        // 「いいね」の数を返す
+        return response()->json(['count' => $post->likes->count()]);
     }
-
+    
+    // 「いいねの解除」処理
     public function unlike($id)
     {
-        $like = Like::where('post_id', $id)->where('user_id', Auth::id())->first();
-        if ($like) {
-            $like->delete();
-            session()->flash('success', 'You Unliked the Reply.');
-        }
-
-        return redirect()->back();
+        $post = Post::findOrFail($id);
+        $user = Auth::user();
+    
+        // 「いいね」を解除する
+        $post->likes()->where('user_id', $user->id)->delete();
+    
+        // 「いいね」の数を返す
+        return response()->json(['count' => $post->likes->count()]);
     }
+    
+
 
     public function create()
     {

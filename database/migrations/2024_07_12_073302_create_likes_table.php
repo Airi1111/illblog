@@ -17,8 +17,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('post_id')->constrained()->cascadeOnDelete();
-           
             $table->timestamps();
+
+            // ユーザーIDと投稿IDの組み合わせにユニーク制約を追加
+            $table->unique(['user_id', 'post_id']);
         });
     }
 

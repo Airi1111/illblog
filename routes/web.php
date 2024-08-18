@@ -31,9 +31,14 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/first/{post}', [PostController::class, 'update'])->name('update');
     Route::delete('/first/{post}', [PostController::class, 'delete'])->name('delete');
     Route::get('/first/{post}/edit', [PostController::class, 'edit'])->name('edit');
-     
-    Route::post('posts/{post}/comments', [PostCommentController::class, 'store'])->name('post.comments.store');
-    Route::delete('post-comments/{comment}', [PostCommentController::class, 'destroy'])->name('post.comments.destroy');
+    
+
+    Route::post('/first/{post}/comments', [PostCommentController::class, 'store'])->name('postcomments.store');
+    Route::delete('/first/comments/{comment}', [PostCommentController::class, 'destroy'])->name('postcomments.destroy');
+
+    
+    Route::post('/question/{question}/comments', [QuestionCommentsController::class, 'store'])->name('questioncomments.store');
+    Route::delete('/question/comments/{comment}', [QuestionCommentsController::class, 'destroy'])->name('questioncomments.destroy');
 
     Route::get('/index/question', [QuestionController::class, 'questionpick'])->name('pick.questions');
 
@@ -44,11 +49,6 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/question/{question}', [QuestionController::class, 'update'])->name('question.update');
     Route::delete('/question/{question}', [QuestionController::class, 'delete'])->name('question.delete');
     Route::get('/question/{question}/edit', [QuestionController::class, 'edit'])->name('question.edit');
-
-   
-    
-    Route::post('/questioncomments', [QuestionCommentsController::class, 'store'])->name('questioncomments.store'); // コメントの保存
-    Route::delete('/questioncomments/{comment}', [QuestionCommentsController::class, 'destroy'])->name('questioncomments.destroy');// コメントの削除
     
     // ProfileController のルート定義
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

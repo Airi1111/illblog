@@ -6,7 +6,7 @@
         <title>Laravel</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-        <link rel="stylesheet" href="{{ asset('/css/pickup.css') }}">
+        <link rel="stylesheet" href="{{ asset('/css/question/pickup.css') }}">
     </head>
     <x-app-layout>
         <div class="posts">
