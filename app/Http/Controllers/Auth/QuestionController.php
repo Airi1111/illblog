@@ -89,11 +89,15 @@ class QuestionController extends Controller
 
     public function show(Question $question)
     {
-        return view('question.show', compact('question'));
+        // コメントを取得
+        $comments = $question->comments; 
+    
+        // ビューに質問とコメントを渡す
+        return view('question.show', compact('question', 'comments'));
     }
     public function __construct()
-{
-    $this->middleware('auth');
-}
+    {
+        $this->middleware('auth');
+    }
 
 }

@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+
 
 class Question extends Model
 {
@@ -31,7 +33,7 @@ class Question extends Model
         return $this::with('user')->orderBy('updated_at', 'DESC')->get();
     }
     
-     public function like_questions()
+     public function likes()
     {
         return $this->hasMany(LikeQuestion::class, 'question_id');
     }
@@ -44,18 +46,27 @@ class Question extends Model
     public function is_liked_by_auth_user()
     {
         $id = Auth::id();
-
-        $likers = array();
-        foreach($this->likes as $like) {
-            array_push($likers, $like->user_id);
+    
+        $likers = [];
+        if ($this->like_questions) { // like_questionsがnullでないかを確認
+            foreach($this->like_questions as $like) {
+                $likers[] = $like->user_id;
+            }
         }
-
+    
         return in_array($id, $likers);
     }
+
     
     public function userPosts($userId)
     {
         return $this::where('user_id', $userId)->orderBy('updated_at', 'DESC')->get();
     }
+    
+    public function comments()
+    {
+        return $this->hasMany(QuestionComment::class, 'question_id');
+    }
+
     
 }

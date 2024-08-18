@@ -1,28 +1,29 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class QuestionComment extends Model
+class PostComment extends Model
 {
     use HasFactory;
     
-    protected $fillable = [
+     protected $fillable = [
         'comment',
-        'question_id',
+        'post_id',
         'user_id',
     ];
 
-    
-    public function question()
+    public function post()
     {
-        return $this->belongsTo(Question::class, 'question_id');
+        return $this->belongsTo(Post::class,'post_id');
     }
-
+    
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
 }
