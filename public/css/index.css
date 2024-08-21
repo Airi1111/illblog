@@ -1,3 +1,9 @@
+/* 全体のスタイル */
+body {
+    background-color: white;
+    font-family: Arial, sans-serif; /* フォントを設定 */
+}
+
 .index {
     padding: 20px;
 }
@@ -11,18 +17,15 @@ header {
     text-align: center;
 }
 
-.pickups, .question {
-    margin: 30px;
+.pickups, .questions-list {
+    margin: 30px 0; /* 上下のマージンを調整 */
 }
 
 .posts {
     text-align: end;
 }
 
-body {
-    background-color: white;
-}
-
+/* アイテムのグリッド表示 */
 .item {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3列に分ける */
@@ -30,75 +33,156 @@ body {
     width: 100%;
 }
 
+/* コンテンツのスタイル */
 .content {
-    position: relative; /* 子要素を相対的に配置するため */
-    overflow: hidden; /* 子要素がはみ出すのを防ぐ */
-    height: 300px; /* 枠の高さを設定 */
-    border: 1px solid #ddd; /* 枠のスタイルを設定 */
-    border-radius: 8px; /* 枠の角を丸くする */
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     display: flex;
-    align-items: center; /* 縦方向の中央揃え */
-    justify-content: center; /* 横方向の中央揃え */
+    flex-direction: column;
 }
 
+/* 画像のスタイル */
 .img {
+    position: relative;
     width: 100%;
-    height: 100%;
+    height: 300px; /* 高さを調整 */
+    overflow: hidden;
 }
 
 .img img {
     width: 100%;
-    height: auto; /* 高さは自動調整 */
-    object-fit: cover; /* 画像の切り抜き方法 */
+    height: 100%;
+    object-fit: cover;
 }
 
-.title-and-likes {
+/* いいねボタンのスタイル */
+.likes {
     position: absolute;
     bottom: 10px;
     right: 10px;
     display: flex;
-    background-color: rgba(0, 0, 0, 0.5); /* 半透明の背景 */
+    background-color: rgba(0, 0, 0, 0.5);
     color: white;
     padding: 5px;
     border-radius: 5px;
 }
 
-.title-and-likes h4 {
-    margin: 0;
-    margin-right: 10px;
+/* 詳細情報のスタイル */
+.details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+}
+
+/* プロフィールとユーザー名のスタイル */
+.profile-and-username {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-image-container {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+}
+
+.profile-image {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 .username {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    background-color: rgba(0, 0, 0, 0.5); /* 半透明の背景 */
-    color: white;
-    padding: 5px;
-    border-radius: 5px;
-    text-align: end;
+    margin-left: 10px;
+    text-align: start; /* テキストを左揃え */
 }
 
+/* タイトルのスタイル */
+.title {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 5px;
+    padding: 5px;
+    max-width: calc(100% - 20px);
+    text-align: start; /* 左詰め */
+    font-weight: bold;
+}
+
+/* ヘッダーと見出し */
 h3 {
-    text-align: start;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 20px;
+    text-align: center; /* 中央揃え */
+}
+
+/* #Pick Up と #Question の文字サイズを統一 */
+.tag {
+    font-size: 24px; /* ここで文字サイズを統一 */
+    font-weight: bold; /* フォントウェイトを設定 */
+    margin-bottom: 20px;
+}
+
+/* 質問リストのスタイル */
+.questions-list {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 左詰め */
+}
+
+/* 各質問のスタイル */
+.questions {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+    width: 100%; /* 幅を100%にして左詰めを効かせる */
+    text-align: left; /* 左詰め */
+    display: flex;
+    flex-direction: column; /* 縦方向に並べる */
+    position: relative; /* 親要素に相対位置指定を設定 */
+}
+
+/* 質問タイトルのスタイル */
+.questions .title {
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 10px;
+    position: static; /* 絶対位置を解除 */
+}
+
+/* 「もっと見る」ボタンのスタイル */
+.more {
+    margin-top: 30px;
+    text-align: center;
 }
 
 .more a {
-    margin-top: 50px;
     display: inline-block;
-    background-color: #d54444; /* より濃い赤色 */
-    color: white; /* ボタンの文字色 */
-    padding: 10px 20px; /* ボタンの内側の余白 */
-    text-decoration: none; /* ボタンの下線を削除 */
-    border-radius: 50px; /* ボタンの角を丸くする */
-    font-weight: bold; /* ボタンの文字を太くする */
-    text-align: center; /* ボタン内の文字を中央揃え */
-    transition: background-color 0.3s, color 0.3s; /* ホバー時のアニメーション */
+    background-color: #d54444;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .more a:hover {
-    background-color: #FFCACA; /* ホバー時の背景色 */
-    color: white; /* ホバー時の文字色 */
+    background-color: #FFCACA;
+    color: white;
 }
 
 /* 検索フォームのスタイル */
@@ -116,26 +200,17 @@ h3 {
 .search-container input[type="text"] {
     padding: 10px;
     font-size: 16px;
-    border: 2px solid #ddd; /* 枠線の色と幅 */
-    border-radius: 8px; /* 角を丸くする */
-    width: 100%; /* フォーム内の幅に合わせる */
-    max-width: 600px; /* 最大幅を設定 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* ボックスシャドウ */
-    margin-right: 10px; /* ボタンとの間隔 */
+    border: 2px solid #ddd;
+    border-radius: 8px;
 }
-
-.search-container button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #d54444; /* ボタンの背景色 */
-    color: white; /* ボタンの文字色 */
-    border: none;
-    border-radius: 8px; /* 角を丸くする */
-    cursor: pointer; /* カーソルをポインタに */
-    transition: background-color 0.3s; /* ホバー時のアニメーション */
+/* タグのスタイル */
+.tag {
+    font-size: 16px; /* 文字サイズを小さく設定 */
+    font-weight: bold; /* フォントウェイトを設定 */
+    margin-bottom: 20px; /* 下部マージンを調整 */
+    text-align: left; /* 左揃え */
+    margin-left: 0; /* 左側のマージンを削除 */
 }
-
-.search-container button:hover {
-    background-color: #b52d2d; /* ホバー時の背景色 */
+.header-wrapper h3 {
+    font-size: 1.25rem; /* フォントサイズを小さくする。適宜調整可能。 */
 }
-

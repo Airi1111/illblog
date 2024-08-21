@@ -3,7 +3,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use App\Notifications\LikedNotification;
 
 class LikeController extends Controller
 {
@@ -11,6 +12,9 @@ class LikeController extends Controller
     {
         $post = Post::find($request->id);
         $post->likes()->create(['user_id' => Auth::id()]);
+
+        // 投稿者にいいねされたことを通知
+        $post->user->notify(new LikedNotification(Auth::user(), $post));
 
         return response()->json(['count' => $post->likes->count()]);
     }
@@ -23,3 +27,4 @@ class LikeController extends Controller
         return response()->json(['count' => $post->likes->count()]);
     }
 }
+

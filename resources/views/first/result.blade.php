@@ -27,11 +27,7 @@
                 @foreach($posts as $post)
                     <div class="content">
                         <div class="img">
-                            @if($post->image_url) 
-                                <a href="{{ route('posts', ['post' => $post->id]) }}"><img src="{{ $post->image_url }}" alt="画像が読み込めません。" ></a>
-                            @else
-                                <p>画像がありません。</p>
-                            @endif
+                           
                             <div class="title-and-likes">
                                 <div class="title">
                                     <h4><a href="{{ route('posts', ['post' => $post->id]) }}">{{ $post->title }}</a></h4>

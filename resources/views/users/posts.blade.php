@@ -14,24 +14,19 @@
         <div class="home">
             <!-- MY WORKS Header -->
             <div class="header-wrapper">
-                <h3 class="font-semibold leading-tight">MY WORKS</h3>
+                <h3 class="font-semibold leading-tight">{{ $user->name }} WORKS</h3>
                 <div class="round-frame">
                     <div class="profile-and-username">
                         @if ($user->profile_image)
                         <div class="profile-image-container">
-                            
                             <a href="{{ route('profile') }}">
                                 <img src="{{ $user->profile_image }}" alt="Profile Image" class="profile-image">
                             </a>
                         </div>
                         @else
-                            <div class="profile-image-container">
-                                <img  src="{{ $user->profile_image }}"　src=" img/icon.png" alt="Profile Image" class="profile-image">
-                            </div>
-
+                            <p>No profile image available.</p>
                         @endif
                     </div>
-
                 </div>
             </div>
 
@@ -73,7 +68,7 @@
 
             <!-- MY QUESTIONS Header -->
             <div class="header-wrapper">
-                <h3 class="font-semibold leading-tight">MY QUESTIONS</h3>
+                <h3 class="font-semibold leading-tight">{{ $user->name }} QUESTIONS</h3>
             </div>
 
             <!-- Questions List -->

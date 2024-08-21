@@ -38,12 +38,19 @@
                 </div>
 
                 <div class="content">
+                    <div class="profile-and-username">
+                        <div class="profile-image-container">
+                            <img src="{{ $post->user->profile_image ?: '/path/to/default-image.jpg' }}" alt="Profile Image" class="profile-image">
+                        </div>
+                        <div class="username">
+                            <small>{{ $post->user->name }}</small>
+                        </div>
+                    </div>
                     <div class="content__post">
                         <h4 class="title">{{ $post->title }}</h4>
                         <p class="comment">{{ $post->comment }}</p>
                         <p class="tag">{{ $post->tag }}</p>
                     </div>
-                    <small>{{ $post->user->name }}</small>
                 </div>
                 <div class="likes">
                     @if($post->is_liked_by_auth_user())
@@ -56,7 +63,7 @@
                         </a>
                     @endif
                 </div>
-                <form action="/first/{{ $post->id }}" id="form_{{ $post->id }}" method="post">
+                <form action="{{ route('delete', ['post' => $post->id]) }}" id="form_{{ $post->id }}" method="POST" style="display: inline;">
                     @csrf
                     @method('DELETE')
                     <button type="button" onclick="deletePost({{ $post->id }})" class="delete-button">削除</button>
@@ -100,6 +107,13 @@
     <!-- jQueryの読み込み -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        function deletePost(id) {
+            'use strict';
+            if (confirm('削除すると復元できません。\n本当に削除しますか？')) {
+                document.getElementById(`form_${id}`).submit();
+            }
+        }
+
         $(document).ready(function() {
             $.ajaxSetup({
                 headers: {
@@ -109,8 +123,7 @@
 
             $('#newCommentForm').on('submit', function(e) {
                 e.preventDefault();
-
-                var postId = "{{ $post->id }}"; // 現在の投稿IDを取得
+                var postId = "{{ $post->id }}";
 
                 $.ajax({
                     type: 'POST',

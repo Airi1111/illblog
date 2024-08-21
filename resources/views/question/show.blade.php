@@ -57,13 +57,16 @@
             <a href="/">戻る</a>
         </div>
         <script>
-            function deleteQuestion(id) {
-                'use strict';
-
-                if (confirm('削除すると復元できません。\n本当に削除しますか？')) {
-                    document.getElementById(`form_${id}`).submit();
+            
+                function deleteQuestion(id) {
+                    'use strict';
+            
+                    if (confirm('削除すると復元できません。\n本当に削除しますか？')) {
+                        document.getElementById(`form_${id}`).submit();
+                    }
                 }
-            }
+            
+
         </script>
 
         <h1 style="text-align:center;" class="question_title">Comments for Question</h1>
