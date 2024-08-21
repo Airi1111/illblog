@@ -55,4 +55,34 @@ class User extends Authenticatable
         return $this::with('posts')->find(Auth::id())->posts()->orderBy('updated_at', 'DESC')->paginate($limit_count);
     }
     
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'followed_id', 'follower_id');
+    }
+    
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'followed_id');
+    }
+    
+    public function follow(User $user)
+    {
+        return $this->following()->attach($user->id);
+    }
+    
+    public function unfollow(User $user)
+    {
+        return $this->following()->detach($user->id);
+    }
+    
+    public function isFollowing(User $user)
+    {
+        return $this->following()->where('followed_id', $user->id)->exists();
+    }
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
+    
+    
 }

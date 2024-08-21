@@ -140,3 +140,31 @@ input[type="text"]:focus {
 .remove-image-button:hover {
     background: rgba(255, 0, 0, 0.8);
 }
+
+.button-container {
+    text-align: center; /* 中央に配置 */
+    margin-bottom: 20px; /* ボタンとの距離を確保 */
+}
+
+.question-button {
+    display: inline-block;
+    background-color: #FF5733; /* 指定されたオレンジ色の背景 */
+    color: #ffffff; /* 白色の文字 */
+    padding: 10px 20px; /* パディングの調整 */
+    font-size: 16px; /* 文字サイズ */
+    font-weight: bold; /* 文字を太字に */
+    border-radius: 5px; /* 角を丸くする */
+    text-decoration: none; /* 下線を消す */
+    transition: background-color 0.3s, box-shadow 0.3s; /* 背景色と影の変化をスムーズに */
+    border: 1px solid transparent; /* ボーダーの初期設定 */
+}
+
+.question-button:hover {
+    background-color: #e94e29; /* ホバー時の色（少し暗めのオレンジ） */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* ホバー時の影 */
+}
+
+.question-button:active {
+    background-color: #c43c1b; /* クリック時の色（さらに暗めのオレンジ） */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* クリック時の影 */
+}

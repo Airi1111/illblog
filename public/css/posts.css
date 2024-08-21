@@ -16,42 +16,42 @@ body {
     border-radius: 8px;
     padding: 20px;
     margin: 20px;
-    width: 80%;
+    width: 90%;
+    max-width: 800px; /* 最大幅を設定して広すぎないように調整 */
     background-color: #f9f9f9;
     text-align: center;
 }
 
 .image-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* 列の幅を150pxから自動調整 */
-    gap: 20px; /* 画像間のスペースを少し広げる */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
     width: 100%;
-    max-width: 600px; /* 最大幅を600pxに設定 */
-    margin: 0 auto; /* グリッド全体を中央に配置 */
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .image-item {
     width: 100%;
     height: 0;
-    padding-top: 100%; /* アスペクト比を1:1に設定 */
-    position: relative; 
-    overflow: hidden; 
+    padding-top: 100%;
+    position: relative;
+    overflow: hidden;
 }
 
 .image-item img {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%; /* 画像の幅を全体に拡げる */
-    height: 100%; /* 画像の高さを全体に拡げる */
-    object-fit: contain; /* 画像全体が収まるように調整 */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 画像が枠に合わせて調整される */
     border-radius: 8px;
 }
 
-/* 画像が1枚の場合に中央に配置するためのスタイル */
 .image-grid.single-image {
-    grid-template-columns: 1fr; /* 1列に設定 */
-    justify-items: center; /* アイテムを中央に配置 */
+    grid-template-columns: 1fr;
+    justify-items: center;
 }
 
 .content {
@@ -79,29 +79,55 @@ body {
     margin-bottom: 10px;
 }
 
-/* コメントフォームのスタイル */
+.profile-and-username {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px; /* 上部にマージンを追加して他の要素とバランスを取る */
+}
+
+.profile-image-container {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.username {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
 #commentForm {
     margin-top: 20px;
-    width: 50%;
+    width: 90%;
+    max-width: 600px;
     margin-left: auto;
     margin-right: auto;
-    text-align: center; /* 中央揃え */
+    text-align: center;
 }
 
 #commentForm textarea {
-    width: 100%; /* コメントエリアをフォーム内で中央配置 */
+    width: 100%;
     border-radius: 8px;
     border: 1px solid #ddd;
     padding: 10px;
     margin-bottom: 10px;
     font-size: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* シンプルでおしゃれな影を追加 */
-    transition: box-shadow 0.3s ease; /* 影のスムーズな変化 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
 }
 
 #commentForm textarea:focus {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* フォーカス時の影を強調 */
-    outline: none; /* デフォルトのアウトラインを削除 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    outline: none;
 }
 
 #commentForm button {
@@ -113,20 +139,20 @@ body {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin: 10px auto; /* 中央に配置 */
-    display: block; /* ボタンをブロック表示にしてテキストエリアの下に配置 */
+    margin: 10px auto;
+    display: block;
 }
 
 #commentForm button:hover {
     background-color: #b43838;
 }
 
-/* コメントリストのスタイル */
 #commentList {
     list-style: none;
     padding: 0;
     margin-top: 20px;
-    width: 80%;
+    width: 90%;
+    max-width: 600px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -135,19 +161,36 @@ body {
     padding: 10px;
     font-size: 16px;
     text-align: center;
-    border-bottom: 1px solid #ddd; /* コメント間の薄い線 */
+    border-bottom: 1px solid #ddd;
 }
 
 #commentList li:nth-child(odd) {
-    background-color: #f9f9f9; /* 奇数行の背景色 */
+    background-color: #f9f9f9;
 }
 
 #commentList li:nth-child(even) {
-    background-color: #e9e9e9; /* 偶数行の背景色 */
+    background-color: #e9e9e9;
 }
 
 .question_title {
     text-align: center;
     margin: 10px;
     padding-top: 20px;
+}
+.image-item {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 アスペクト比の例。必要に応じて調整 */
+}
+
+.image-item img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* 画像全体が表示されるように調整 */
+    transform: translate(-50%, -50%); /* 中央に配置 */
+    border-radius: 8px;
 }

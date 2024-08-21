@@ -80,11 +80,17 @@ class QuestionController extends Controller
         return redirect()->route('question.show', ['question' => $question->id]);
     }
 
-    public function delete(Question $question)
+   public function delete(Question $question)
     {
+        // 認可チェック
+        if (Auth::id() !== $question->user_id) {
+            return redirect()->route('home')->with('error', 'あなたにはこの投稿を削除する権限がありません。');
+        }
+    
         $question->delete();
-        return redirect()->route('home');
+        return redirect()->route('home')->with('status', '投稿が削除されました。');
     }
+
 
     public function myPosts()
     {

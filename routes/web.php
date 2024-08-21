@@ -5,6 +5,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuestionCommentsController;
 use App\Http\Controllers\PostCommentController;
+use App\Http\Controllers\FollowController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/first/{post}', [PostController::class, 'update'])->name('update');
     Route::delete('/first/{post}', [PostController::class, 'delete'])->name('delete');
     Route::get('/first/{post}/edit', [PostController::class, 'edit'])->name('edit');
+    Route::get('/users/profile', [PostController::class, 'profile'])->name('profile');
     
 
     Route::post('/first/{post}/comments', [PostCommentController::class, 'store'])->name('postcomments.store');
@@ -45,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/question/create', [QuestionController::class, 'create'])->name('question.create');
     Route::post('/question', [QuestionController::class, 'store'])->name('question.store');
     Route::get('/question/myquestion', [PostController::class, 'myquestions'])->name('myquestions');
-      Route::get('/question/{question}', [QuestionController::class, 'show'])->name('question.show');
+    Route::get('/question/{question}', [QuestionController::class, 'show'])->name('question.show');
     Route::put('/question/{question}', [QuestionController::class, 'update'])->name('question.update');
     Route::delete('/question/{question}', [QuestionController::class, 'delete'])->name('question.delete');
     Route::get('/question/{question}/edit', [QuestionController::class, 'edit'])->name('question.edit');
@@ -54,6 +57,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    Route::get('/users/{user}', [ProfileController::class, 'show'])->name('user.profile');
+    Route::get('/users/{user}/posts', [PostController::class, 'userPosts'])->name('user.posts');
+    Route::get('/users/{user}/followers', [ProfileController::class, 'followers'])->name('user.followers');
+
+    
+    Route::post('/follow/{user}', [FollowController::class, 'follow'])->name('follow');
+    Route::post('/unfollow/{user}', [FollowController::class, 'unfollow'])->name('unfollow');
+    Route::get('/followers', [FollowController::class, 'followers'])->name('followers');
+    Route::get('/following', [FollowController::class, 'following'])->name('following');
+        
 });
 
 // 認証関連のルート

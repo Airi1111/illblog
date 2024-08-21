@@ -17,3 +17,6 @@ nav{
 .pickups,.question{
     margin:30px;
 }
+.notification-icon {
+    margin-right: 16px; /* 通知アイコンの右側に余白を追加 */
+}

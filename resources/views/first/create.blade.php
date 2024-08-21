@@ -12,8 +12,8 @@
         <form action="{{ route('store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <br>
-            <div class="to_question_post">
-                <a href="{{ route('question.create') }}" class="pickmore" type="button">質問投稿へ</a>
+            <div class="button-container">
+                <a href="{{ route('question.create') }}" class="question-button">質問投稿へ</a>
             </div>
             <div class="posts">
                 <strong><h3>投稿内容</h3></strong>
@@ -43,14 +43,12 @@
     </div>
 
 <script>
-
 document.addEventListener('DOMContentLoaded', function() {
     const fileInput = document.querySelector('#file-input');
     const previewContainer = document.querySelector('#preview');
     const deletedImagesInput = document.querySelector('#deleted-images');
     let deletedImages = [];
 
-    // 画像追加ボタンのイベントリスナー
     document.querySelector('.add-image-button').addEventListener('click', function() {
         fileInput.click();
     });
@@ -60,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (file.type.startsWith('image/')) {
                 const preview = document.createElement('div');
                 preview.className = 'file-input-preview';
-                preview.style.position = 'relative'; // スタイルを相対的に設定
+                preview.style.position = 'relative';
 
                 const img = document.createElement('img');
                 img.file = file;
@@ -76,8 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 removeButton.className = 'remove-image-button';
                 removeButton.innerHTML = '<i class="fa-solid fa-delete-left" style="color: #ffffff;"></i>';
                 removeButton.addEventListener('click', function() {
-                    preview.remove(); // 画像プレビューを削除
-                    // 削除された画像のファイル名を追加
+                    preview.remove();
                     if (!deletedImages.includes(file.name)) {
                         deletedImages.push(file.name);
                         updateDeletedImagesInput();
@@ -95,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function() {
         deletedImagesInput.value = deletedImages.join(',');
     }
 });
-
 </script>
 
 </x-app-layout>

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use App\Models\User; 
 
 
 class ProfileController extends Controller
@@ -19,10 +20,15 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $user = $request->user();
+        $isFollowing = Auth::user()->isFollowing($user); // フォローしているかどうかをチェック
+    
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
+            'isFollowing' => $isFollowing,
         ]);
     }
+
 
     /**
      * Update the user's profile information.
@@ -88,4 +94,17 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+    
+    public function show(User $user)
+    {
+        return view('users.profile', compact('user'));
+    }
+    // ProfileController.php
+    public function followers(User $user)
+    {
+        $followers = $user->followers; // ユーザーのフォロワーを取得
+    
+        return view('users.profile', compact('user', 'followers'));
+    }
+
 }

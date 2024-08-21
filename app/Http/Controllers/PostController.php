@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use App\Helpers\ImageUploadHelper;
+use App\Models\User; 
 
 
 class PostController extends Controller
@@ -37,6 +38,7 @@ class PostController extends Controller
         return view('first.index', ['posts' => $posts, 'questions' => $questions]);
     }
     
+
     public function home(Request $request)
     {
         $postQuery = Post::where('user_id', Auth::id())
@@ -57,7 +59,12 @@ class PostController extends Controller
             $question->image_url = json_decode($question->image_urls, true)[0] ?? null;
         }
     
-        return view('dashboard', ['posts' => $posts, 'questions' => $questions]);
+        // ビューにデータを渡す
+        return view('dashboard', [
+            'posts' => $posts,
+            'questions' => $questions,
+            'user' => Auth::user()  // ユーザー情報をビューに渡す
+        ]);
     }
 
 
@@ -75,33 +82,36 @@ class PostController extends Controller
 
 
    
-// ユーザーがすでに「いいね」しているかどうかを確認してから「いいね」処理を行う
     public function like($id)
     {
         $post = Post::findOrFail($id);
         $user = Auth::user();
     
         // すでに「いいね」しているかを確認
-        if (!$post->likes()->where('user_id', $user->id)->exists()) {
+        $liked = $post->likes()->where('user_id', $user->id)->exists();
+        if (!$liked) {
             $post->likes()->create(['user_id' => $user->id]);
         }
     
         // 「いいね」の数を返す
-        return response()->json(['count' => $post->likes->count()]);
+        return response()->json(['count' => $post->likes->count(), 'liked' => !$liked]);
     }
     
-    // 「いいねの解除」処理
     public function unlike($id)
     {
         $post = Post::findOrFail($id);
         $user = Auth::user();
     
         // 「いいね」を解除する
-        $post->likes()->where('user_id', $user->id)->delete();
+        $liked = $post->likes()->where('user_id', $user->id)->exists();
+        if ($liked) {
+            $post->likes()->where('user_id', $user->id)->delete();
+        }
     
         // 「いいね」の数を返す
-        return response()->json(['count' => $post->likes->count()]);
+        return response()->json(['count' => $post->likes->count(), 'liked' => false]);
     }
+
     
 
 
@@ -166,6 +176,18 @@ class PostController extends Controller
         return view('first.search');
     }
 
+    public function profile()
+    {
+        $user = Auth::user(); // 現在のユーザーを取得
+        $posts = Post::where('user_id', $user->id)->get(); // ユーザーの投稿を取得
+        return view('users.show', [
+            'posts' => $posts,
+            'user' => $user // ビューにユーザー情報を渡す
+        ]);
+    }
+
+
+    
     public function search(Request $request)
     {
         $keyword = $request->input('keyword');
@@ -203,9 +225,15 @@ class PostController extends Controller
 
     public function delete(Post $post)
     {
+        // 認可チェック
+        if (Auth::id() !== $post->user_id) {
+            return redirect()->route('home')->with('error', 'あなたにはこの投稿を削除する権限がありません。');
+        }
+    
         $post->delete();
-        return redirect()->route('home')->with(['posts' => $post]);
+        return redirect()->route('home')->with('status', '投稿が削除されました。');
     }
+
     
     public function myPosts()
     {
@@ -213,4 +241,41 @@ class PostController extends Controller
         $posts = Post::userPosts($userId);
         return view('dashboard', ['posts' => $posts]);
     }
+    
+    public function userPosts(User $user)
+    {
+        $posts = $user->posts()->paginate(10); // ユーザーの投稿
+        $questions = $user->questions()->paginate(10); // ユーザーの質問
+    
+        $postQuery = Post::where('user_id', Auth::id())
+                         ->orderBy('created_at', 'DESC');
+        $posts = (new Post)->getPaginateByLimit($postQuery);
+    
+        // 画像URLを設定
+        foreach ($posts as $post) {
+            $post->image_url = json_decode($post->image_urls, true)[0] ?? null;
+        }
+    
+        $questionQuery = Question::where('user_id', Auth::id())
+                                 ->orderBy('created_at', 'DESC');
+        $questions = (new Question)->getPaginateByLimit($questionQuery);
+    
+        // 画像URLを設定
+        foreach ($questions as $question) {
+            $question->image_url = json_decode($question->image_urls, true)[0] ?? null;
+        }
+    
+        // ビューにデータを渡す
+        return view('dashboard', [
+            'posts' => $posts,
+            'questions' => $questions,
+            'user' => Auth::user()  // ユーザー情報をビューに渡す
+        ]);
+        return view('users.posts', [
+            'user' => $user,
+            'posts' => $posts,
+            'questions' => $questions
+        ]);
+    }
+
 }
